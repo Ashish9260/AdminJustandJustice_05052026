@@ -1,0 +1,86 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Access Denied";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Access Denied</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+            body {
+                height: 100vh;
+                margin: 0;
+                background: #29303a!important;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 420px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: "Segoe UI", Arial, sans-serif;
+            }
+
+            .access-box {
+                background: rgba(255, 255, 255, 0.95);
+                padding: 45px;
+                border-radius: 12px;
+                text-align: center;
+                max-width: 450px;
+                width: 100%;
+                box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            }
+
+                .access-box h1 {
+                    font-size: 70px;
+                    font-weight: bold;
+                    color: #c82333;
+                }
+
+                .access-box h3 {
+                    margin-bottom: 10px;
+                }
+
+                .access-box p {
+                    color: #444;
+                }
+
+            .badge-police {
+                background: #003366;
+                color: #fff;
+                padding: 6px 14px;
+                border-radius: 20px;
+                font-size: 13px;
+                display: inline-block;
+                margin-bottom: 15px;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="access-box">
+        <span class="badge-police">JustandJustice</span>
+
+        <h1>403</h1>
+        <h3>Access Denied 🚫</h3>
+
+        <p>
+            You are not authorized to access this system.<br />
+            कृपया सिस्टम प्रशासक से संपर्क करें।
+        </p>
+
+        <div class="mt-4">
+          
+            <a asp-controller="Account" asp-action="Index" class="btn btn-outline-dark ms-2">
+                Login
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

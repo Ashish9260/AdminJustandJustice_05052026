@@ -1,0 +1,366 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+@using System.Security.Claims
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/assests/vendors/css/vendor.bundle.base.css" rel="stylesheet" />
+    <link href="~/assests/vendors/mdi/css/materialdesignicons.min.css" rel="stylesheet" />
+    <link href="~/assests/css/style.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="~/assests/images/favicon_transparent.ico" />
+    <link href="~/assests/css/toastr.min.css" rel="stylesheet" />
+    <style>
+          .preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader {
+    width: 80px;
+    height: 80px;
+
+    border-radius: 50%;
+    border: 4px solid #ddd;
+    border-top-color: #29303a;
+
+    animation: loading 1s linear infinite;
+}
+
+/* Missing animation */
+@@keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}</style>
+</head>
+<body>
+
+        <div class="preloader">
+            <div class="loader"></div>
+        </div>
+    <div class="container-scroller d-flex">
+        @{
+            var role = "";
+            var name = "";
+            var designation = "";
+              role = User.FindFirst(ClaimTypes.Role)?.Value;
+                        name = User.FindFirst(ClaimTypes.Name)?.Value;
+            string current = DateTime.Now.ToString("MMM dd, yyyy hh:mm tt");
+        }
+        <!-- partial:./partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item sidebar-category">
+                    <p>Navigation</p>
+                    <span></span>
+                </li>
+                  @if (role == "Admin")
+                    {
+                        <li class="nav-item">
+                    <a class="nav-link" href="/Home/Index">
+                        <i class="mdi mdi-view-quilt menu-icon"></i>
+                        <span class="menu-title">Dashboard</span>
+                   @*      <div class="badge badge-info badge-pill">2</div> *@
+                    </a>
+                </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/BannerList">
+                        <i class="mdi mdi-image menu-icon"></i>
+                        <span class="menu-title">Banner</span>
+                   @*      <div class="badge badge-info badge-pill">2</div> *@
+                    </a>
+                </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="/ContactList">
+                        <i class="mdi mdi-account-circle menu-icon"></i>
+                        <span class="menu-title">Contact</span>
+                   @*      <div class="badge badge-info badge-pill">2</div> *@
+                    </a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link" href="/CaseTypeList">
+                        <i class="mdi mdi-file menu-icon"></i>
+                        <span class="menu-title">Case Type</span>
+                   @*      <div class="badge badge-info badge-pill">2</div> *@
+                    </a>
+                </li>
+                      <li class="nav-item">
+                    <a class="nav-link" href="/BlogList">
+                        <i class="mdi mdi-book menu-icon"></i>
+                        <span class="menu-title">Blog</span>
+                   @*      <div class="badge badge-info badge-pill">2</div> *@
+                    </a>
+                </li>
+
+                }
+            </ul>
+        </nav>
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">
+            <!-- partial:./partials/_navbar.html -->
+            <nav class="navbar col-lg-12 col-12 px-0 py-0 py-lg-4 d-flex flex-row">
+                <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+                    <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                        <span class="mdi mdi-menu"></span>
+                    </button>
+                    <div class="navbar-brand-wrapper">
+                        <a class="navbar-brand brand-logo" href="/Home/Index"><img src="~/assests/images/icon_transparent.png" style="height:80px;width:80px;" alt="logo" /></a>
+                        <a class="navbar-brand brand-logo-mini" href="/Home/Index"><img src="~/assests/images/icon_transparent.png" alt="logo" /></a>
+                    </div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                       
+                        var LoginID = User.FindFirst("LoginID")?.Value;
+
+
+
+                        <h4 class="font-weight-bold mb-0 d-none d-md-block mt-1">
+                            Welcome back, @name (@LoginID)</h4>
+                    }
+                    <ul class="navbar-nav navbar-nav-right">
+                        <li class="nav-item">
+                            <h4 class="mb-0 font-weight-bold d-none d-xl-block">@current</h4>
+                        </li>
+                 @*        <li class="nav-item dropdown me-1">
+                            <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-bs-toggle="dropdown">
+                                <i class="mdi mdi-calendar mx-0"></i>
+                                <span class="count bg-info">2</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
+                                <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
+                                <a class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <img src="~/assests/images/faces/face4.jpg" alt="image" class="profile-pic">
+                                        </div>
+                                        <div class="preview-item-content flex-grow">
+                                            <h6 class="preview-subject ellipsis font-weight-normal">
+                                                David Grey
+                                            </h6>
+                                            <p class="font-weight-light small-text text-muted mb-0">
+                                                The meeting is cancelled
+                                            </p>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item preview-item">
+                                        <div class="preview-thumbnail">
+                                            <img src="~/assests/images/faces/face2.jpg" alt="image" class="profile-pic">
+                                            </div>
+                                            <div class="preview-item-content flex-grow">
+                                                <h6 class="preview-subject ellipsis font-weight-normal">
+                                                    Tim Cook
+                                                </h6>
+                                                <p class="font-weight-light small-text text-muted mb-0">
+                                                    New product launch
+                                                </p>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item preview-item">
+                                            <div class="preview-thumbnail">
+                                                <img src="~/assests/images/faces/face3.jpg" alt="image" class="profile-pic">
+                                                </div>
+                                                <div class="preview-item-content flex-grow">
+                                                    <h6 class="preview-subject ellipsis font-weight-normal">
+                                                        Johnson
+                                                    </h6>
+                                                    <p class="font-weight-light small-text text-muted mb-0">
+                                                        Upcoming board meeting
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown me-2">
+                                        <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
+                                            <i class="mdi mdi-email-open mx-0"></i>
+                                            <span class="count bg-danger">1</span>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+                                            <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+                                            <a class="dropdown-item preview-item">
+                                                <div class="preview-thumbnail">
+                                                    <div class="preview-icon bg-success">
+                                                        <i class="mdi mdi-information mx-0"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="preview-item-content">
+                                                    <h6 class="preview-subject font-weight-normal">Application Error</h6>
+                                                    <p class="font-weight-light small-text mb-0 text-muted">
+                                                        Just now
+                                                    </p>
+                                                </div>
+                                            </a>
+                                            <a class="dropdown-item preview-item">
+                                                <div class="preview-thumbnail">
+                                                    <div class="preview-icon bg-warning">
+                                                        <i class="mdi mdi-settings mx-0"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="preview-item-content">
+                                                    <h6 class="preview-subject font-weight-normal">Settings</h6>
+                                                    <p class="font-weight-light small-text mb-0 text-muted">
+                                                        Private message
+                                                    </p>
+                                                </div>
+                                            </a>
+                                            <a class="dropdown-item preview-item">
+                                                <div class="preview-thumbnail">
+                                                    <div class="preview-icon bg-info">
+                                                        <i class="mdi mdi-account-box mx-0"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="preview-item-content">
+                                                    <h6 class="preview-subject font-weight-normal">New user registration</h6>
+                                                    <p class="font-weight-light small-text mb-0 text-muted">
+                                                        2 days ago
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li> *@
+                                </ul>
+                                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                                    <span class="mdi mdi-menu"></span>
+                                </button>
+                            </div>
+                            <div class="navbar-menu-wrapper navbar-search-wrapper d-none d-lg-flex align-items-center">
+                                <ul class="navbar-nav mr-lg-2">
+                                    <li class="nav-item nav-search d-none d-lg-block">
+                                        <div class="input-group">
+                                          @*   <input type="text" class="form-control" placeholder="Search Here..." aria-label="search" aria-describedby="search"> *@
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="navbar-nav navbar-nav-right">
+                                    <li class="nav-item nav-profile dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
+                                            <img src="~/assests/images/faces/face5.jpg" alt="profile" />
+                                            <span class="nav-profile-name">@name</span>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                                       @*      <a class="dropdown-item">
+                                                <i class="mdi mdi-settings text-primary"></i>
+                                                Settings
+                                            </a> *@
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="Logout">
+                                                <i class="mdi mdi-logout text-primary"></i>
+                                                Logout
+                                            </a>
+                                        </div>
+                                    </li>
+                   @*                  <li class="nav-item">
+                                        <a href="#" class="nav-link icon-link">
+                                            <i class="mdi mdi-plus-circle-outline"></i>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link icon-link">
+                                            <i class="mdi mdi-web"></i>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link icon-link">
+                                            <i class="mdi mdi-clock-outline"></i>
+                                        </a>
+                                    </li> *@
+                                </ul>
+                            </div>
+                        </nav>
+                        <!-- partial -->
+                        <div class="main-panel">
+                            <main role="main" @* class="pb-3" *@>
+                                @RenderBody()
+                            </main>
+                            <!-- partial:./partials/_footer.html -->
+                            <footer class="footer">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-sm-flex justify-content-center justify-content-sm-between py-2">
+                                            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © <a href="/Home/Index" target="_blank">justandjustice </a>@DateTime.Now.Year </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </footer>
+                            <!-- partial -->
+                        </div>
+                    </div>
+                </div>
+
+                <script src="~/lib/jquery/dist/jquery.min.js"></script>
+                @await RenderSectionAsync("Scripts", required: false)
+                <!-- base:js -->
+                <!-- endinject -->
+                <!-- Plugin js for this page-->
+                <script src="~/assests/vendors/chart.js/chart.min.js"></script>
+                <script src="~/assests/js/jquery.cookie.js"></script>
+                <!-- End plugin js for this page-->
+                <!-- inject:js -->
+                <script src="~/assests/js/off-canvas.js"></script>
+                <script src="~/assests/js/hoverable-collapse.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                <!-- endinject -->
+                <!-- Custom js for this page-->
+                <script src="~/assests/js/dashboard.js"></script>
+    <script src="~/assests/js/toastr.min.js"></script>
+        <script src="~/assests/js/template.js"></script>
+<script src="~/assests/js/file-upload.js"></script>
+                <!-- End custom js for this page-->
+        <script>
+            
+            if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+            }
+         $(document).ready(function () {
+
+    $("form").on("submit", function () {
+
+        // Agar form valid hai tabhi loader dikhao
+        if ($(this).valid()) {
+            $('.preloader').show();
+        } else {
+            $('.preloader').hide();
+        }
+
+    });
+
+});
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <text>toastr.success("@TempData["SuccessMessage"]");</text>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <text>toastr.error("@TempData["ErrorMessage"]");</text>
+            }
+            @if (TempData["InfoMessage"] != null)
+            {
+                <text>toastr.info("@TempData["InfoMessage"]");</text>
+            }
+            @if (TempData["WarningMessage"] != null)
+            {
+                <text>toastr.warning("@TempData["WarningMessage"]");</text>
+            }
+      
+
+            $(window).on("load", function(){
+            $('.preloader').fadeOut();
+            })
+
+        </script>
+            </body>
+        </html>

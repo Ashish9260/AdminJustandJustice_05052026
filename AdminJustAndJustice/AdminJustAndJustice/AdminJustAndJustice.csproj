@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\assests\css\scss\.DS_Store" />
+    <None Include="wwwroot\assests\css\scss\components\.DS_Store" />
+    <None Include="wwwroot\assests\vendors\.DS_Store" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.12" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.1" />
+    <PackageReference Include="System.Drawing.Common" Version="10.0.5" />
+  </ItemGroup>
+
+</Project>

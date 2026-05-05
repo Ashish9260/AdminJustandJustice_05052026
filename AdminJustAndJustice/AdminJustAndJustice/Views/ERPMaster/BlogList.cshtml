@@ -1,0 +1,222 @@
+﻿@model AdminJustAndJustice.Models.ERPBlogModel
+@using Newtonsoft.Json;
+@{
+    ViewData["Title"] = "BlogList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+        .switch input {
+            display: none;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+    input:checked + .slider {
+        background-color: #654b2491;
+    }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+</style>
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h4 class="card-title">Blog</h4>
+
+                        </div>
+                        <div class="col-lg-4" style="text-align: right;">
+                            <a href="/BlogMaster" class="btn btn-primary btn-sm">Add Blog</a>
+                                                         
+                        </div>
+                    </div>
+                    @*                     <p class="card-description">
+                        Add class <code>.table-bordered</code>
+                    </p> *@
+                    <div class="table-responsive pt-3">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Case Type</th>
+                                    <th>Category</th>
+                                    <th>Title</th>
+                                    <th>Image</th>
+                                    <th>IsPublish</th>
+                                    <th>Publish Status</th>
+                                    <th >Publish  Date</th>
+                                    <th >Created Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    @if (Model?.dtProductEnquiry != null && Model.dtProductEnquiry.Rows.Count > 0)
+                                    {
+                                        int j = 1;
+                                        @for (var i = 0; i < @Model.dtProductEnquiry.Rows.Count; i++)
+                                        {
+                                            <tr>
+                                                <td style="position:relative;">
+                                                    <div class="dropright">
+                                                        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            @j &nbsp; &nbsp;<i class="ph ph-gear"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu" x-placement="right-start">
+                                                            <form class="forms-sample" asp-action="BlogMaster" asp-controller="ERPMaster" enctype="multipart/form-data">
+                                                                <input type="hidden" asp-for="EditPkBlogID" value="@Convert.ToString(@Model.dtProductEnquiry.Rows[i]["intBlogID"])" />
+                                                                <button type="submit" class="dropdown-item text-primary" title="Edit"><i class="mdi mdi-pencil"></i>Edit</button>
+                                                            </form>
+                                                            <form class="forms-sample" asp-action="DeleteBlog" asp-controller="ERPMaster" enctype="multipart/form-data">
+                                                                <input type="hidden" asp-for="EditPkBlogID" value="@Convert.ToString(@Model.dtProductEnquiry.Rows[i]["intBlogID"])" />
+                                                                <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure for delete this records?')" title="Edit"><i class="mdi mdi-delete"></i>Delete</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @Convert.ToString(@Model.dtProductEnquiry.Rows[i]["strCaseType"])
+
+                                                </td>
+                                                <td >
+                                                 @Convert.ToString(@Model.dtProductEnquiry.Rows[i]["strBlogCategory"])
+
+                                                </td>
+                                                <td >
+                                                   @Convert.ToString(@Model.dtProductEnquiry.Rows[i]["strBlogTitle"])
+                                                </td>
+                                                <td >
+                                                    <img src="@Convert.ToString(@Model.dtProductEnquiry.Rows[i]["strFirstImage"])" alt="" class="tbl-All-img">
+
+                                                </td>
+                                                <td >
+                                                    @if (@Convert.ToString(@Model.dtProductEnquiry.Rows[i]["bitIsPublish"]) == "False")
+                                                    {
+                                                        <label class="switch">
+                                                            <input type="checkbox" onchange="fns_BindUpdatePublish(@Convert.ToString(@Model.dtProductEnquiry.Rows[i]["intBlogID"]))" />
+                                                            <span class="slider"></span>
+                                                        </label>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <label class="switch">
+                                                            <input type="checkbox" onchange="fns_BindUpdatePublish(@Convert.ToString(@Model.dtProductEnquiry.Rows[i]["intBlogID"]))" checked />
+                                                            <span class="slider"></span>
+                                                        </label>
+                                                    }
+                                                </td>
+                                                <td >
+                                                    @if (!string.IsNullOrEmpty(@Convert.ToString(@Model.dtProductEnquiry.Rows[i]["bitIsPublish"])))
+                                                    {
+                                                        @if (@Convert.ToString(@Model.dtProductEnquiry.Rows[i]["bitIsPublish"]) == "True")
+                                                        {
+                                                            <span style="padding: 6px !important;" class="badge bg-success-subtle rounded-pill text-success border border-success fs-11 py-1 px-2 my-2">Published</span>
+                                                        }
+                                                        else if (@Convert.ToString(@Model.dtProductEnquiry.Rows[i]["bitIsPublish"]) == "False")
+                                                        {
+                                                            <span style="padding: 6px !important;" class="badge bg-danger-subtle rounded-pill text-danger border border-danger fs-11 py-1 px-2 my-2"> Unpublished</span>
+                                                        }
+
+                                                    }
+                                                </td>
+                                                <td>
+                                                  @Convert.ToString(@Model.dtProductEnquiry.Rows[i]["dtPublisDate"])
+                                                </td>
+                                                <td>
+                                                   @Convert.ToString(@Model.dtProductEnquiry.Rows[i]["strCreateDate"])
+                                                </td>
+
+                                            </tr>
+                                            j++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr> <td colspan="20" style="text-align:center;font-weight:bold;color:#dc3545"><i>No Record Found!</i></td></tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr> <td colspan="20" style="text-align:center;font-weight:bold;color:#dc3545"><i>No Record Found!</i></td></tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+           function fns_BindUpdatePublish(BlogId) {
+
+         $('.preloader').show();
+         $.ajax({
+             type: "POST",
+             url: '@Url.Action("UpdateBlogPublish", "ERPMaster")',
+             dataType: 'json',
+             data: {EditPkBlogID:BlogId,},
+             success:OnSuccessPublishStock,
+             error: function () {
+                alert("Something went wrong!")
+                 $('.preloader').hide();
+             }
+         });
+    }
+      function OnSuccessPublishStock(result) {
+          try{
+              if (result.error == "0") {
+                  toastr.success(result.message);
+              }
+              else {
+                  toastr.error(result.message);
+               }
+               setTimeout(function () {
+                   window.location.reload(true);
+                    $('.preloader').hide();
+               }, 700);
+               return false;
+          }
+          catch(error)
+          {
+               console.error("An error occurred:", error.message);
+          }
+      };
+</script>
+

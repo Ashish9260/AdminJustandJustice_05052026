@@ -1,0 +1,139 @@
+﻿@model AdminJustAndJustice.Models.ContactModel;
+@using Newtonsoft.Json;
+@{
+    ViewData["Title"] = "ContactList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h4 class="card-title">Contact List</h4>
+
+                        </div>
+                        <div class="col-lg-4" style="text-align: right;">
+                            <a href="/ContactMaster" class="btn btn-primary btn-sm">Add Contact</a>
+                                                         
+                        </div>
+                    </div>
+                    @*                     <p class="card-description">
+                        Add class <code>.table-bordered</code>
+                    </p> *@
+                    <div class="table-responsive pt-3">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                 
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Mobile No</th>
+                                    <th>Email Id</th>
+                                    <th>Seq No</th>
+                                    <th>Address</th>
+                                    @*           <th>Action</th> *@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    @if (Model?.dtContact != null && Model.dtContact.Rows.Count > 0)
+                                    {
+                                        int j = 1;
+                                        @for (var i = 0; i < @Model.dtContact.Rows.Count; i++)
+                                        {
+                                            <tr>
+                                                <td style="position:relative;">
+                                                    <div class="dropright">
+                                                        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            @j &nbsp; &nbsp;<i class="mdi mdi-cog"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu" x-placement="right-start">
+                                                            <form class="forms-sample" asp-action="ContactMaster" asp-controller="ERPMaster" enctype="multipart/form-data">
+                                                                <input type="hidden" asp-for="EditContactID" value="@Convert.ToString(@Model.dtContact.Rows[i]["ContactID"])" />
+                                                                <button type="submit" class="dropdown-item text-primary" title="Edit"><i class="mdi mdi-pencil"></i>Edit</button>
+                                                            </form>
+                                                            <form class="forms-sample" asp-action="DeleteContact" asp-controller="ERPMaster" enctype="multipart/form-data">
+                                                                <input type="hidden" asp-for="EditContactID" value="@Convert.ToString(@Model.dtContact.Rows[i]["ContactID"])" />
+                                                                <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure for delete this records?')" title="Edit"><i class="mdi mdi-delete"></i>Delete</button>
+                                                            </form>
+                                                            @* <a href="#" class="dropdown-item text-danger" onclick="fn_ShowDeleteModal(@Model.dtBanner.Rows[i]["BannerID"])"><i class="mdi mdi-trash-can"></i>Delete</a> *@
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @Convert.ToString(@Model.dtContact.Rows[i]["strContactTitle"])
+                                                </td>
+                                       
+
+                                                <td>
+                                                    @{
+                                                        var mobileJson = Convert.ToString(Model.dtContact.Rows[i]["strMobileNo"]);
+                                                        var mobiles = string.IsNullOrEmpty(mobileJson)
+                                                            ? new List<MobileDto>()
+                                                            : JsonConvert.DeserializeObject<List<MobileDto>>(mobileJson);
+                                                    }
+
+                                                    @if (mobiles != null && mobiles.Count > 0)
+                                                    {
+                                                        <ol>
+                                                            @foreach (var m in mobiles)
+                                                            {
+                                                                <li>@m.mobile</li>
+                                                            }
+                                                        </ol>
+                                                    }
+                                                </td>
+
+                                                <td>
+                                                    @{
+                                                        var emailJson = Convert.ToString(Model.dtContact.Rows[i]["strEmailId"]);
+                                                        var emails = string.IsNullOrEmpty(emailJson)
+                                                            ? new List<EmailDto>()
+                                                            : JsonConvert.DeserializeObject<List<EmailDto>>(emailJson);
+                                                    }
+
+                                                    @if (emails != null && emails.Count > 0)
+                                                    {
+                                                        <ol>
+                                                            @foreach (var e in emails)
+                                                            {
+                                                                <li>@e.email</li>
+                                                            }
+                                                        </ol>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @Convert.ToString(@Model.dtContact.Rows[i]["intSequnceNo"])
+                                                </td>
+                                                <td>
+                                                    @Convert.ToString(@Model.dtContact.Rows[i]["strLocation"])
+                                                </td>
+                                            </tr>
+                                            j++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr> <td colspan="20" style="text-align:center;font-weight:bold;color:#dc3545"><i>No Record Found!</i></td></tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr> <td colspan="20" style="text-align:center;font-weight:bold;color:#dc3545"><i>No Record Found!</i></td></tr>
+                                }
+
+                            
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

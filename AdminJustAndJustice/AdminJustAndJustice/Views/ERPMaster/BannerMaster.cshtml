@@ -1,0 +1,123 @@
+﻿@model AdminJustAndJustice.Models.ERPBannerModel
+@{
+    ViewData["Title"] = "BannerMaster";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Banner Master</h4>
+                    @if (string.IsNullOrEmpty(Model.EditBannerID))
+                    {
+                        <p class="card-description">
+                            Add Banner
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="card-description">
+                            Update Banner
+                        </p>
+                    }
+                    <form class="forms-sample" asp-action="AddAndUpdateBanner" autocomplete="off" asp-controller="ERPMaster" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="exampleInputName1">Title <span class="text-danger"><b>*</b></span></label>
+                            <input type="text" class="form-control" placeholder="Title" maxlength="250" asp-for="BannerTitle">
+                            </div>
+                            <div class="form-group">
+                                <label for="BannerDetails">Details <span class="text-danger"><b>*</b></span></label>
+                                <input type="text" class="form-control" placeholder="Title" maxlength="400" asp-for="BannerDetails">
+                                </div>
+                                <div class="form-group">
+                                    <label for="VideoURL">Link <span class="text-danger"><b>*</b></span></label>
+                                    <input type="url" class="form-control" placeholder="Title" asp-for="VideoURL">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>File upload <span class="text-danger"><b>*</b></span></label>
+                                        <input type="file" asp-for="fileUpload" class="file-upload-default">
+                                            <div class="input-group col-xs-8">
+                                                <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                                                <span class="input-group-append">
+                                                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            @if (string.IsNullOrEmpty(Model.EditBannerID))
+                                            {
+                                                <img id="imagePreview" src="" alt="Preview" style="max-width:200px; display:none; border:1px solid #ddd; padding:5px;">
+                                            }
+                                            else
+                                            {
+                                                <input type="hidden" asp-for="@Model.EditBannerID" />
+                                                <img id="imagePreview" src="@Model.OldImageURL" alt="Preview" style="max-width:200px; border:1px solid #ddd; padding:5px;">
+                                            }
+                                        </div>
+                                        @if (string.IsNullOrEmpty(Model.EditBannerID))
+                                        {
+
+                                            <input type="submit" class="btn btn-primary me-2" name="btn_Add" value="Save" />
+                                        }
+                                        else
+                                        {
+                                            <input type="submit" class="btn btn-primary me-2" name="btn_Add" value="Update" />
+                                        }
+                                        <a href="/BannerList" class="btn btn-light">Cancel</a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script src="~/lib/jquery/dist/jquery.min.js"></script>
+                <script>
+
+                        $(document).ready(function () {
+                            
+
+                        $('.file-upload-browse').on('click', function () {
+                            $('#fileUpload').click();
+                        });
+
+                        $('#fileUpload').on('change', function () {
+
+                            let file = this.files[0];
+                            let preview = $("#imagePreview");
+
+                            preview.hide();
+
+                            if (!file) return;
+                            if (!file.type.startsWith("image/")) {
+                                toastr.error("Only image files are allowed!");
+                                this.value = "";
+                                return;
+                            }
+
+                            let reader = new FileReader();
+
+                            reader.onload = function (e) {
+                                let img = new Image();
+
+                                img.onload = function () {
+
+                                    if (img.width === 2000 || img.height === 2000) {
+                                        toastr.error("Image must be less then 2000 x 2000 pixels!");
+                                        $('#fileUpload').val('');
+                                        return;
+                                    }
+                                    toastr.success("Image uploaded successfully!");
+
+                                    preview.attr("src", e.target.result).show();
+                                    $('.file-upload-info').val(file.name);
+                                };
+
+                                img.src = e.target.result;
+                            };
+
+                            reader.readAsDataURL(file);
+                        });
+                    });
+                </script>
