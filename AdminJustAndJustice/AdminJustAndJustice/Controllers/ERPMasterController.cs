@@ -284,7 +284,7 @@ namespace AdminJustAndJustice.Controllers
                     TempData["ErrorMessage"] = "Please Enter Contact Title!";
                     return View("ContactMaster", model);
                 }
-                if (mobiles== null)
+                if (mobiles == null)
                 {
                     TempData["ErrorMessage"] = "Please enter at least one mobile number!";
                     return View("ContactMaster", model);
@@ -490,7 +490,7 @@ namespace AdminJustAndJustice.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddAndUpdateCaseType([FromForm] CaseTypeModel model, string btn_Add)
-        
+
         {
             var claim = Convert.ToString(User.FindFirst("UserId").Value);
             try
@@ -501,7 +501,7 @@ namespace AdminJustAndJustice.Controllers
                 }
                 if (model.fileUpload != null && model.fileUpload.Length > 0)
                 {
-                    if (model.fileUpload.Length > 1* 1048576)
+                    if (model.fileUpload.Length > 1 * 1048576)
                     {
                         TempData["ErrorMessage"] = "Image size must not exceed 1MB.";
                         model.FirstImage = model.OldImageURL;
@@ -532,7 +532,7 @@ namespace AdminJustAndJustice.Controllers
                 model.ShortCaseType = !string.IsNullOrEmpty(model.ShortCaseType) ? model.ShortCaseType.Trim() : null;
                 model.SequenceNo = !string.IsNullOrEmpty(model.SequenceNo) ? model.SequenceNo.Trim() : "0";
                 var seoKeywords = model.SeoKeywords?
-                .Where(x => !string.IsNullOrWhiteSpace(x)|| !string.IsNullOrEmpty(x))
+                .Where(x => !string.IsNullOrWhiteSpace(x) || !string.IsNullOrEmpty(x))
                 .Select(x => x.Trim())
                 .Distinct()
                 .ToList();
@@ -888,7 +888,7 @@ namespace AdminJustAndJustice.Controllers
                     TempData["ErrorMessage"] = "Please Enter First Description";
                     return View("BlogMaster", model);
                 }
-           
+
                 if (string.IsNullOrEmpty(model.SEOTitle))
                 {
                     TempData["ErrorMessage"] = "Please Enter SEO Title";
@@ -951,7 +951,7 @@ namespace AdminJustAndJustice.Controllers
                 }).ToList();
                 model.Tag = JsonConvert.SerializeObject(tagList);
                 model.SeoKeyword = JsonConvert.SerializeObject(keywordList);
-              
+
                 if (btn_Add == "Save")
                 {
                     model.Mode = "INSERT";
@@ -1071,6 +1071,294 @@ namespace AdminJustAndJustice.Controllers
             }
         }
         #endregion ############################## Blog Master ##############################
+        #region ############################## Case Master ##############################
+        [Route("/CaseList")]
+        public async Task<IActionResult> CaseList(CaseModel _model)
+        {
+            try
+            {
+                if (!User.Identity.IsAuthenticated)
+                {
+                    return RedirectToAction("Index", "Account");
+                }
+
+                _model.PageSize = SessionManager.Size;
+                DataSet ds = await _model.GetCaseList();
+                _model.dtProductEnquiry = ds.Tables[0];
+                var totalRecords = 0;
+                if (_model.dtProductEnquiry.Rows.Count > 0)
+                {
+                    totalRecords = Convert.ToInt32(_model.dtProductEnquiry.Rows[0]["TotalRecords"].ToString());
+                    var pager = new Pager(totalRecords, _model.PageNo, SessionManager.Size);
+                    _model.Pager = pager;
+                }
+
+                return View(_model);
+
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return View("CaseList", _model);
+            }
+        }
+        [Route("/CaseMaster")]
+        public async Task<IActionResult> CaseMaster(CaseModel _model)
+        {
+            try
+            {
+                if (!User.Identity.IsAuthenticated)
+                {
+                    return RedirectToAction("Index", "Account");
+                }
+                #region ddlCaseType
+                List<SelectListItem> ddlCaseType = new List<SelectListItem>();
+                _model.OpCode = "1";
+                DataSet dsDDL1 = _model.GetMasterData();
+                if (dsDDL1 != null && dsDDL1.Tables.Count > 0)
+                {
+                    if (dsDDL1.Tables[0].Rows.Count > 0)
+                    {
+                        foreach (DataRow item in dsDDL1.Tables[0].Rows)
+                        {
+                            ddlCaseType.Add(new SelectListItem { Value = item["Id"].ToString(), Text = item["Name"].ToString() });
+                        }
+                    }
+                }
+                ViewBag.ddlCaseType = ddlCaseType;
+                #endregion ddlCaseType
+
+                if (!string.IsNullOrEmpty(_model.EditPkCaseID))
+                {
+                    _model.PkCaseID = _model.EditPkCaseID;
+
+                    _model.PageSize = SessionManager.Size;
+                    _model.PageNo = 1;
+
+                    DataSet ds = await _model.GetCaseList();
+
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                    {
+                        DataRow row = ds.Tables[0].Rows[0];
+
+                        _model.FkCaseTypeId = Convert.ToString(row["intFkCaseTypeId"]);
+                        _model.CaseNo = Convert.ToString(row["strCaseNo"]);
+                        _model.CaseTitle = Convert.ToString(row["strCaseTitle"]);
+
+                        _model.CaseStartDate = Convert.ToDateTime(row["dtCaseStartDate"])
+                            .ToString("yyyy-MM-dd");
+
+                        if (!string.IsNullOrEmpty(Convert.ToString(row["dtJudgementDate"])))
+                        {
+                            _model.JudgementDate = Convert.ToDateTime(row["dtJudgementDate"])
+                                .ToString("yyyy-MM-dd");
+                        }
+
+                        // Client Details
+                        _model.ClientName = Convert.ToString(row["strClientName"]);
+                        _model.ClientMobileNo = Convert.ToString(row["strClientMobileNo"]);
+                        _model.ClientEmailId = Convert.ToString(row["strClientEmailId"]);
+                        _model.ClientAddress = Convert.ToString(row["strClientAddress"]);
+
+                        // Branch
+                        _model.BranchName = Convert.ToString(row["strBranchName"]);
+
+                        _model.Priority = Convert.ToString(row["strPriority"]);
+                        _model.status = Convert.ToString(row["strStatus"]);
+
+                        _model.JudgeName = Convert.ToString(row["strJudgeName"]);
+
+                        _model.ShortDetails = Convert.ToString(row["strShortDetails"]);
+                        _model.Details = Convert.ToString(row["strDetails"]);
+
+                    }
+                }
+                return View(_model);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return View("CaseMaster", _model);
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddAndUpdateCase([FromForm] CaseModel model, string btn_Add)
+        {
+            try
+            {
+                var claim = Convert.ToString(User.FindFirst("UserId")?.Value);
+
+                model.intFkBranchId = "0";
+                model.bigintCreatedBy = claim;
+
+                // Trim Values
+                model.CaseNo = model.CaseNo?.Trim();
+                model.CaseTitle = model.CaseTitle?.Trim();
+                model.CaseStartDate = model.CaseStartDate?.Trim();
+                model.ClientName = model.ClientName?.Trim();
+                model.ClientMobileNo = model.ClientMobileNo?.Trim();
+                model.ClientEmailId = model.ClientEmailId?.Trim();
+                model.ClientAddress = model.ClientAddress?.Trim();
+                model.BranchName = model.BranchName?.Trim();
+                model.Priority = model.Priority?.Trim();
+                model.status = model.status?.Trim();
+                model.JudgeName = model.JudgeName?.Trim();
+                model.JudgementDate = model.JudgementDate?.Trim();
+                model.ShortDetails = model.ShortDetails?.Trim();
+                model.Details = model.Details?.Trim();
+
+                // Validation
+                if (string.IsNullOrEmpty(model.CaseNo))
+                {
+                    TempData["ErrorMessage"] = "Please Enter Case No!";
+                    return View("CaseMaster", model);
+                }
+
+                if (string.IsNullOrEmpty(model.CaseTitle))
+                {
+                    TempData["ErrorMessage"] = "Please Enter Case Title!";
+                    return View("CaseMaster", model);
+                }
+               
+                if (string.IsNullOrEmpty(model.ClientName))
+                {
+                    TempData["ErrorMessage"] = "Please Enter Client Name!";
+                    return View("CaseMaster", model);
+                }
+
+                if (string.IsNullOrEmpty(model.ClientMobileNo))
+                {
+                    TempData["ErrorMessage"] = "Please Enter Client Mobile No!";
+                    return View("CaseMaster", model);
+                }
+                if (string.IsNullOrEmpty(model.ClientAddress))
+                {
+                    TempData["ErrorMessage"] = "Please Enter Client Address!";
+                    return View("CaseMaster", model);
+                }
+                if (model.FkCaseTypeId=="0")
+                {
+                    TempData["ErrorMessage"] = "Please Select Case Type!";
+                    return View("CaseMaster", model);
+                }
+                if (string.IsNullOrEmpty(model.Priority))
+                {
+                    TempData["ErrorMessage"] = "Please Select Priority!";
+                    return View("CaseMaster", model);
+                }
+
+                if (string.IsNullOrEmpty(model.status))
+                {
+                    TempData["ErrorMessage"] = "Please Select Status!";
+                    return View("CaseMaster", model);
+                }
+
+                // Decided Status Validation
+                if (model.status == "Decided")
+                {
+                    if (string.IsNullOrEmpty(model.JudgeName))
+                    {
+                        TempData["ErrorMessage"] = "Please Enter Judge Name!";
+                        return View("CaseMaster", model);
+                    }
+
+                    if (string.IsNullOrEmpty(model.JudgementDate))
+                    {
+                        TempData["ErrorMessage"] = "Please Enter Judgement Date!";
+                        return View("CaseMaster", model);
+                    }
+                }
+                if (string.IsNullOrEmpty(model.ShortDetails))
+                {
+                    TempData["ErrorMessage"] = "Please Short Details!";
+                    return View("CaseMaster", model);
+                }
+                if (string.IsNullOrEmpty(model.Details))
+                {
+                    TempData["ErrorMessage"] = "Please Enter Details!";
+                    return View("CaseMaster", model);
+                }
+
+
+                if (btn_Add == "Update")
+                {
+                    model.Mode = "Update";
+                }
+                else
+                {
+                    model.Mode = "INSERT";
+                }
+
+                DataSet ds = await model.AddEditDltCase();
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    if (Convert.ToString(ds.Tables[0].Rows[0]["code"]) == "0")
+                    {
+                        TempData["SuccessMessage"] = Convert.ToString(ds.Tables[0].Rows[0]["mess"]);
+                        return RedirectToAction("CaseList", "ERPMaster");
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = Convert.ToString(ds.Tables[0].Rows[0]["mess"]);
+                        return View("CaseMaster", model);
+                    }
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Something went wrong!";
+                    return View("CaseMaster", model);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return View("CaseMaster", model);
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteCase([FromForm] CaseModel model)
+        {
+            var claim = Convert.ToString(User.FindFirst("UserId").Value);
+            model.intFkBranchId = "0";
+            model.bigintCreatedBy = claim;
+
+            try
+            {
+                model.Mode = "DELETE";
+                model.PkCaseID = model.EditPkCaseID;
+                DataSet ds = await model.AddEditDltCase();
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    if (Convert.ToString(ds.Tables[0].Rows[0]["code"]) == "0")
+                    {
+                        TempData["SuccessMessage"] = Convert.ToString(ds.Tables[0].Rows[0]["mess"]);
+                        return RedirectToAction("CaseList", "ERPMaster");
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = Convert.ToString(ds.Tables[0].Rows[0]["mess"]);
+                        return RedirectToAction("CaseList", "ERPMaster");
+                    }
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Something went wrong!";
+                }
+                return RedirectToAction("CaseList", "ERPMaster");
+
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("CaseList", "ERPMaster");
+            }
+        }
+
+        #endregion ############################## Case Master ##############################
+
 
     }
 }

@@ -53,6 +53,8 @@
         public static string GetContact = "spERP_GetContact";
         public static string GetCaseType = "spERP_GetCaseType";
         public static string AddEditDltCaseType = "spERP_AddEditDltCaseType";
+        public static string AddEditDltCase = "spERP_AddEditDltCase";
+        public static string GetCaseList = "spERP_GetCaseList";
 
 
 

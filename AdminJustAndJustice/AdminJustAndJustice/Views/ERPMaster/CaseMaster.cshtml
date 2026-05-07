@@ -1,0 +1,173 @@
+﻿@model AdminJustAndJustice.Models.CaseModel;
+@{
+    ViewData["Title"] = "CaseMaster";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Case Master</h4>
+                    @if (string.IsNullOrEmpty(Model.EditPkCaseID))
+                    {
+                        <p class="card-description">
+                            Add Case
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="card-description">
+                            Update Case
+                        </p>
+                    }
+                    <form class="forms-sample" asp-action="AddAndUpdateCase" autocomplete="off" asp-controller="ERPMaster" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="CaseNo">Case No<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" autocomplete="off" maxlength="200" asp-for="CaseNo">
+                        </div>
+                        <div class="form-group">
+                            <label for="CaseTitle">Case Title<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" autocomplete="off" maxlength="300" asp-for="CaseTitle">
+                        </div>
+                        <div class="form-group">
+                            <label for="CaseStartDate">Case Start Date<span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" autocomplete="off" asp-for="CaseStartDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="ClientName">Client Name<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" autocomplete="off" maxlength="200" asp-for="ClientName">
+                        </div>
+                     
+                        <div class="form-group">
+                            <label for="ClientMobileNo">Client Mobile No<span class="text-danger"><b>*</b></span></label>
+                            <input type="text" class="form-control" autocomplete="off" oninput="return validatePriceInput(this)" onkeypress="restrictInvalidCharacters(event)"  maxlength="10" asp-for="ClientMobileNo">
+                        </div>
+                        <div class="form-group">
+                            <label for="ClientEmailId">Client Email Id</label>
+                            <input type="text" class="form-control" autocomplete="off" maxlength="250" asp-for="ClientEmailId">
+                        </div>
+                        <div class="form-group">
+                            <label for="ClientAddress">Client Address<span class="text-danger"><b>*</b></span></label>
+                            <textarea type="text" class="form-control" autocomplete="off" rows="2" asp-for="ClientAddress"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="intFkCaseTypeId">Case Type<span class="text-danger"><b>*</b></span></label>
+                            @Html.DropDownListFor(m => m.FkCaseTypeId, new SelectList(ViewBag.ddlCaseType, "Value", "Text"), new { @class = "form-select" })
+                                      
+                        </div>
+                        <div class="form-group">
+                            <label for="BranchName">Branch Name<span class="text-danger"><b>*</b></span></label>
+                            <select asp-for="BranchName" class="form-select">
+                                <option value="Lucknow">Lucknow</option>
+                                <option value="Allahabad">Allahabad</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="Priority">Priority<span class="text-danger"><b>*</b></span></label>
+                            <select asp-for="Priority" class="form-select">
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status<span class="text-danger"><b>*</b></span></label>
+                            <select asp-for="status" class="form-select">
+                                <option value="Pending">Pending</option>
+                                <option value="Decided">Decided</option>
+                            </select>
+                        </div>
+                        <div id="dvDecided">
+                            <div class="form-group">
+                                <label for="JudgeName">Judge Name<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" autocomplete="off" maxlength="300" asp-for="JudgeName">
+                            </div>
+                     
+                            <div class="form-group">
+                                <label for="JudgementDate">Judgement Date<span class="text-danger"><b>*</b></span></label>
+                                <input type="date" class="form-control" asp-for="JudgementDate">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ShortDetails">Short Details<span class="text-danger"><b>*</b></span></label>
+                            <textarea asp-for="ShortDetails" maxlength="300" rows="3" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="Details">Details<span class="text-danger"><b>*</b></span></label>
+                            <textarea asp-for="Details" rows="4" class="form-control"></textarea>
+                        </div>
+
+                  
+                        @if (string.IsNullOrEmpty(Model.EditPkCaseID))
+                        {
+                            <input type="submit" class="btn btn-primary me-2" name="btn_Add" value="Save" />
+                        }
+                        else
+                        {
+                            <input type="hidden" asp-for="@Model.EditPkCaseID" />
+                            <input type="hidden" asp-for="@Model.PkCaseID" />
+                            <input type="submit" class="btn btn-primary me-2" name="btn_Add" value="Update" />
+                        }
+                        <a href="/CaseList" class="btn btn-light">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    function validatePriceInput(element) {
+        const input = element.value;
+        const validInput = input.replace(/[^0-9]/g, '');
+        const parts = validInput.split('.');
+        if (parts.length > 2) {
+            element.value = parts[0] + '.' + parts[1];
+        } else {
+            element.value = validInput;
+        }
+        return true;
+    }
+
+    function restrictInvalidCharacters(event) {
+        const charCode = event.which || event.keyCode;
+        const charStr = String.fromCharCode(charCode);
+        if (!charStr.match(/^[0-9]$/)) {
+            event.preventDefault();
+            return false;
+        }
+        return true;
+    }
+      $(document).ready(function () {
+
+        function toggleDecidedDiv() {
+
+            var status = $("#status").val();
+            if( $("#PkCaseID").val()==null)
+           {
+            $("#JudgementDate").val("");
+            $("#JudgeName").val("");
+           }
+            if (status === "Decided") {
+                $("#dvDecided").show();
+            }
+            else {
+                $("#dvDecided").hide();
+            }
+        }
+
+    
+        toggleDecidedDiv();
+
+        $("#status").change(function () {
+            toggleDecidedDiv();
+        });
+
+    });
+</script>

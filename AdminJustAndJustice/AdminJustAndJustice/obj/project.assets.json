@@ -6900,23 +6900,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\lenovo\\.nuget\\packages\\": {},
+    "C:\\Users\\ASUS\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Ashish_Mishra\\AdminJustandJustice_05052026\\AdminJustAndJustice\\AdminJustAndJustice\\AdminJustAndJustice.csproj",
+      "projectUniqueName": "C:\\GitHub\\AdminJustAndjustice\\AdminJustAndJustice\\AdminJustAndJustice\\AdminJustAndJustice.csproj",
       "projectName": "AdminJustAndJustice",
-      "projectPath": "C:\\Ashish_Mishra\\AdminJustandJustice_05052026\\AdminJustAndJustice\\AdminJustAndJustice\\AdminJustAndJustice.csproj",
-      "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
-      "outputPath": "C:\\Ashish_Mishra\\AdminJustandJustice_05052026\\AdminJustAndJustice\\AdminJustAndJustice\\obj\\",
+      "projectPath": "C:\\GitHub\\AdminJustAndjustice\\AdminJustAndJustice\\AdminJustAndJustice\\AdminJustAndJustice.csproj",
+      "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+      "outputPath": "C:\\GitHub\\AdminJustAndjustice\\AdminJustAndJustice\\AdminJustAndJustice\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -6925,7 +6925,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

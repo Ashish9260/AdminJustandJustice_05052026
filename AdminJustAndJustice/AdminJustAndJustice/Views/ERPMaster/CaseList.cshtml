@@ -1,0 +1,247 @@
+﻿@model AdminJustAndJustice.Models.CaseModel
+@{
+    ViewData["Title"] = "CaseList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h4 class="card-title">Case</h4>
+
+                        </div>
+                        <div class="col-lg-4" style="text-align: right;">
+                            <a href="/CaseMaster" class="btn btn-primary btn-sm">Add Case</a>
+                                                         
+                        </div>
+                    </div>
+                    @*                     <p class="card-description">
+                        Add class <code>.table-bordered</code>
+                    </p> *@
+                    <div class="table-responsive pt-3">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Case No</th>
+                                    <th>Case Type</th>
+                                    <th>Client Name</th>
+                                    <th>Mobile No</th>
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                    <th>Judge Name</th>
+                                    <th>Case Start</th>
+                                    <th>Judgement Date</th>
+                                    <th>Created Date</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @if (Model != null)
+                                {
+                                    @if (Model?.dtProductEnquiry != null && Model.dtProductEnquiry.Rows.Count > 0)
+                                    {
+                                        int j = 1;
+
+                                        @for (var i = 0; i < Model.dtProductEnquiry.Rows.Count; i++)
+                                        {
+                                            <tr>
+
+                                                <td style="position:relative;">
+                                                    <div class="dropright">
+
+                                                        <button type="button"
+                                                                class="btn btn-outline-primary btn-sm"
+                                                                data-bs-toggle="dropdown"
+                                                                aria-haspopup="true"
+                                                                aria-expanded="false">
+
+                                                            @j &nbsp;&nbsp;<i class="ph ph-gear"></i>
+
+                                                        </button>
+
+                                                        <div class="dropdown-menu" x-placement="right-start">
+
+                                                            <!-- Edit -->
+
+                                                            <form asp-action="CaseMaster"
+                                                                  asp-controller="ERPMaster"
+                                                                  method="post">
+
+                                                                <input type="hidden"
+                                                                       asp-for="EditPkCaseID"
+                                                                       value="@Convert.ToString(Model.dtProductEnquiry.Rows[i]["intCaseID"])" />
+
+                                                                <button type="submit"
+                                                                        class="dropdown-item text-primary">
+
+                                                                    <i class="mdi mdi-pencil"></i> Edit
+
+                                                                </button>
+
+                                                            </form>
+
+                                                            <!-- Delete -->
+
+                                                            <form asp-action="DeleteCase"
+                                                                  asp-controller="ERPMaster"
+                                                                  method="post">
+
+                                                                <input type="hidden"
+                                                                       asp-for="EditPkCaseID"
+                                                                       value="@Convert.ToString(Model.dtProductEnquiry.Rows[i]["intCaseID"])" />
+
+                                                                <button type="submit"
+                                                                        class="dropdown-item text-danger"
+                                                                        onclick="return confirm('Are you sure want to delete this record?')">
+
+                                                                    <i class="mdi mdi-delete"></i> Delete
+
+                                                                </button>
+
+                                                            </form>
+
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                <!-- Case No -->
+
+                                                <td>
+                                                    @Convert.ToString(Model.dtProductEnquiry.Rows[i]["strCaseNo"])
+                                                </td>
+
+                                                <!-- Case Type -->
+
+                                                <td>
+                                                    @Convert.ToString(Model.dtProductEnquiry.Rows[i]["strCaseType"])
+                                                </td>
+
+                                                <!-- Client Name -->
+
+                                                <td>
+                                                    @Convert.ToString(Model.dtProductEnquiry.Rows[i]["strClientName"])
+                                                </td>
+
+                                                <!-- Mobile -->
+
+                                                <td>
+                                                    @Convert.ToString(Model.dtProductEnquiry.Rows[i]["strClientMobileNo"])
+                                                </td>
+
+                                                <!-- Status -->
+
+                                                <td>
+
+                                                    @if (Convert.ToString(Model.dtProductEnquiry.Rows[i]["strStatus"]) == "Pending")
+                                                    {
+                                                        <span class="badge bg-warning-subtle text-warning border border-warning">
+                                                            Pending
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-success-subtle text-success border border-success">
+                                                            Decided
+                                                        </span>
+                                                    }
+
+                                                </td>
+
+                                                <!-- Priority -->
+
+                                                <td>
+
+                                                    @{
+                                                        var priority = Convert.ToString(Model.dtProductEnquiry.Rows[i]["strPriority"]);
+                                                    }
+
+                                                    @if (priority == "High")
+                                                    {
+                                                        <span class="badge bg-danger text-white px-3 py-2">
+                                                            High
+                                                        </span>
+                                                    }
+                                                    else if (priority == "Medium")
+                                                    {
+                                                        <span class="badge bg-warning text-dark px-3 py-2">
+                                                            Medium
+                                                        </span>
+                                                    }
+                                                    else if (priority == "Low")
+                                                    {
+                                                        <span class="badge bg-success text-white px-3 py-2">
+                                                            Low
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-secondary text-white px-3 py-2">
+                                                            @priority
+                                                        </span>
+                                                    }
+
+                                                </td>
+
+                                                <!-- Judge Name -->
+
+                                                <td>
+                                                    @Convert.ToString(Model.dtProductEnquiry.Rows[i]["strJudgeName"])
+                                                </td>
+
+                                                <!-- Case Start -->
+
+                                                <td>
+                                                    @Convert.ToString(Model.dtProductEnquiry.Rows[i]["CaseStart"])
+                                                </td>
+
+                                                <!-- Judgement Date -->
+
+                                                <td>
+                                                    @Convert.ToString(Model.dtProductEnquiry.Rows[i]["JudgementDate"])
+                                                </td>
+
+                                                <!-- Created Date -->
+
+                                                <td>
+                                                    @Convert.ToString(Model.dtProductEnquiry.Rows[i]["strCreateDate"])
+                                                </td>
+
+                                            </tr>
+
+                                            j++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="20"
+                                                style="text-align:center;font-weight:bold;color:#dc3545">
+                                                <i>No Record Found!</i>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="20"
+                                            style="text-align:center;font-weight:bold;color:#dc3545">
+                                            <i>No Record Found!</i>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

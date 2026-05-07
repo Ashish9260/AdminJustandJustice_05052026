@@ -19,81 +19,89 @@ build_property.TargetFrameworkIdentifier = .NETCoreApp
 build_property.TargetFrameworkVersion = v9.0
 build_property.RootNamespace = AdminJustAndJustice
 build_property.RootNamespace = AdminJustAndJustice
-build_property.ProjectDir = C:\Ashish_Mishra\AdminJustandJustice_05052026\AdminJustAndJustice\AdminJustAndJustice\
+build_property.ProjectDir = C:\GitHub\AdminJustAndjustice\AdminJustAndJustice\AdminJustAndJustice\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Ashish_Mishra\AdminJustandJustice_05052026\AdminJustAndJustice\AdminJustAndJustice
+build_property.MSBuildProjectDirectory = C:\GitHub\AdminJustAndjustice\AdminJustAndJustice\AdminJustAndJustice
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/Account/Index.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/Account/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/BannerList.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/BannerList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRVJQTWFzdGVyXEJhbm5lckxpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/BannerMaster.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/BannerMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRVJQTWFzdGVyXEJhbm5lck1hc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/BlogList.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/BlogList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRVJQTWFzdGVyXEJsb2dMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/BlogMaster.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/BlogMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRVJQTWFzdGVyXEJsb2dNYXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/CaseTypeList.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/CaseList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRVJQTWFzdGVyXENhc2VMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/CaseMaster.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRVJQTWFzdGVyXENhc2VNYXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/CaseTypeList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRVJQTWFzdGVyXENhc2VUeXBlTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/CaseTypeMaster.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/CaseTypeMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRVJQTWFzdGVyXENhc2VUeXBlTWFzdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/ContactList.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/ContactList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRVJQTWFzdGVyXENvbnRhY3RMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/ContactMaster.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/ERPMaster/ContactMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRVJQTWFzdGVyXENvbnRhY3RNYXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/Home/AccessDenied.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/Home/AccessDenied.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBY2Nlc3NEZW5pZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/Home/Index.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/Home/Privacy.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/Shared/Error.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/_ViewImports.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/_ViewStart.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Ashish_Mishra/AdminJustandJustice_05052026/AdminJustAndJustice/AdminJustAndJustice/Views/Shared/_Layout.cshtml]
+[C:/GitHub/AdminJustAndjustice/AdminJustAndJustice/AdminJustAndJustice/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-ztn39o4a30
