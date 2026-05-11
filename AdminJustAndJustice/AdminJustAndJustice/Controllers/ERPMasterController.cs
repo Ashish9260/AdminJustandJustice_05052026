@@ -10,6 +10,7 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
@@ -1356,7 +1357,175 @@ namespace AdminJustAndJustice.Controllers
                 return RedirectToAction("CaseList", "ERPMaster");
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> AddNextCaseDate(CaseModel model, string btn_Add)
+        {
+            string status = "";
+            string msg = "";
 
+            try
+            {
+                if (!User.Identity.IsAuthenticated)
+                {
+                    return RedirectToAction("Index", "Account");
+                }
+
+                var claim = Convert.ToString(User.FindFirst("UserId")?.Value);
+
+                model.intFkBranchId = "0";
+                model.bigintCreatedBy = claim;
+
+                // Trim Values
+                model.PkCaseID = model.PkCaseID?.Trim();
+                model.CaseLastStatusID = model.CaseLastStatusID?.Trim();
+                model.Remark = model.Remark?.Trim();
+                model.NextDate = model.NextDate?.Trim();
+                model.CourtNo = model.CourtNo?.Trim();
+                model.JudgeName = model.JudgeName?.Trim();
+
+                // Validation
+                if (string.IsNullOrWhiteSpace(model.CourtNo))
+                {
+                    return Json(new
+                    {
+                        code = "1",
+                        msg = "Please Enter Court No!"
+                    });
+                }
+
+                if (string.IsNullOrWhiteSpace(model.JudgeName))
+                {
+                    return Json(new
+                    {
+                        code = "1",
+                        msg = "Please Enter Judge Name!"
+                    });
+                }
+
+                if (string.IsNullOrWhiteSpace(model.NextDate))
+                {
+                    return Json(new
+                    {
+                        code = "1",
+                        msg = "Please Select Next Date!"
+                    });
+                }
+
+                if (string.IsNullOrWhiteSpace(model.Remark))
+                {
+                    return Json(new
+                    {
+                        code = "1",
+                        msg = "Please Enter Remark!"
+                    });
+                }
+                model.Mode = "INSERT";
+                DataSet ds = await model.AddEditDltCaseDetails();
+
+                if (ds != null &&
+                    ds.Tables.Count > 0 &&
+                    ds.Tables[0].Rows.Count > 0)
+                {
+                    status = Convert.ToString(ds.Tables[0].Rows[0]["code"]);
+                    msg = Convert.ToString(ds.Tables[0].Rows[0]["mess"]);
+                }
+                else
+                {
+                    status = "1";
+                    msg = "No response from database!";
+                }
+
+                return Json(new
+                {
+                    code = status,
+                    msg = msg
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    code = "1",
+                    msg = ex.Message
+                });
+            }
+        }
+        [HttpPost]
+        public async Task<JsonResult> CaseDetailsList(CaseModel model)
+        {
+            string _error = "";
+            string _mess = "";
+            string chkPermission = "";
+            try
+            {
+                model.Mode = "Select";
+                DataSet ds = await model.AddEditDltCaseDetails();
+                DataTable tmpDT = ds.Tables[0];
+                if (tmpDT.Rows.Count > 0)
+                {
+                    List<Dictionary<string, object>> lstRows = [];
+                    lstRows = GBL_Utility.GetJsonFromTable(tmpDT);
+                    return Json(new { error = _error, message = _mess, cnt = tmpDT.Rows.Count, record = lstRows });
+                }
+                else
+                {
+                    _error = "ERROR";
+                    _mess = "No Record Found.";
+                    return Json(new { error = _error, message = _mess, cnt = "0", record = "" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = "ERROR", message = ex.Message, cnt = "0", record = "" });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> DeleteCaseDetails(CaseModel model, string btn_Add)
+        {
+            string _error = "";
+            string _mess = "";
+            string chkPermission = "";
+            try
+            {
+                model.Mode = "DELETE";
+                DataSet ds = await model.AddEditDltCaseDetails();
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    //if (Convert.ToString(ds.Tables[0].Rows[0]["Code"]) == "0")
+                    //{
+                    //    TempData["SuccessMessage"] = Convert.ToString(ds.Tables[0].Rows[0]["Remark"]);
+                    //    return RedirectToAction("ProductMaster", "ERPMaster");
+                    //}
+                    //else
+                    //{
+                    //    TempData["ErrorMessage"] = Convert.ToString(ds.Tables[0].Rows[0]["Remark"]);
+                    //    return View("ProductMaster", model);
+                    //}
+                    _error = Convert.ToString(ds.Tables[0].Rows[0]["code"]);
+                    _mess = Convert.ToString(ds.Tables[0].Rows[0]["mess"]);
+                    return Json(new { ERROR = _error, MESSAGE = _mess });
+                }
+                else
+                {
+                    //TempData["ErrorMessage"] = "Something went wrong!";
+                    //return View("ProductMaster", model);
+                    _error = "1";
+                    _mess = "Something went wrong!";
+                    return Json(new { ERROR = _error, MESSAGE = _mess });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //TempData["ErrorMessage"] = ex.Message;
+                //return View("ProductMaster", model);
+                _error = "1";
+                _mess = ex.Message;
+                return Json(new { ERROR = _error, MESSAGE = _mess });
+            }
+        }
         #endregion ############################## Case Master ##############################
 
 

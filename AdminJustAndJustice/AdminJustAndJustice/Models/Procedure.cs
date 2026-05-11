@@ -54,6 +54,7 @@
         public static string GetCaseType = "spERP_GetCaseType";
         public static string AddEditDltCaseType = "spERP_AddEditDltCaseType";
         public static string AddEditDltCase = "spERP_AddEditDltCase";
+        public static string AddEditDltCaseDetail = "spERP_AddEditDltCaseDetail";
         public static string GetCaseList = "spERP_GetCaseList";
 
 

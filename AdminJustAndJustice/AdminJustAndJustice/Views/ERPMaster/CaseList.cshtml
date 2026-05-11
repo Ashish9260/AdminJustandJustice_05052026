@@ -102,7 +102,11 @@
                                                                     <i class="mdi mdi-delete"></i> Delete
 
                                                                 </button>
+                                                                <a href="javascript:void(0)" class="dropdown-item text-success"
+                                                                       data-bs-toggle="modal" onclick="fn_OpenPopUp(@Convert.ToString(Model.dtProductEnquiry.Rows[i]["intCaseID"]))">
+                                                                    <i class="mdi mdi-certificate"></i> Add Next Date
 
+                                                                </a>
                                                             </form>
 
                                                         </div>
@@ -245,3 +249,247 @@
     </div>
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Add Next Date</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form asp-action="AddNextCaseDate" asp-controller="ERPMaster" method="post" enctype="multipart/form-data" data-ajax="true" data-ajax-failure="OnSuccessVariant" data-ajax-success="OnSuccessVariant" data-ajax-loading=".preloader">
+      
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="CourtNo">Court No<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" autocomplete="off" maxlength="200" asp-for="CourtNo">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="JudgeName">Judge Name<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" autocomplete="off" maxlength="200" asp-for="JudgeName">
+                                    <input type="hidden" asp-for="PkCaseID">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="NextDate">Next Date<span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" autocomplete="off" asp-for="NextDate">
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="NextDate">Remark<span class="text-danger">*</span></label>
+                                    <textarea class="form-control" autocomplete="off" rows="4" asp-for="Remark"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="table-responsive pt-3">
+                                <table class="table table-bordered table-striped table-hover" id="tblCaseDetail">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Court No.</th>
+                                            <th>Case Date</th>
+                                            <th>Judge Name</th>
+                                            <th>Case Date</th>
+                                            <th>Remark</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+               
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+         
+            function OnSuccessVariant(result) {
+                  try{
+                      if (result.code == "0") {
+                          toastr.success(result.msg)
+                          fn_clearForm();
+                          fns_BindDataList();
+                      }
+                      else {
+                          toastr.error(result.msg)
+                       }
+                   $('.preloader').hide();
+                       return false;
+                  }
+                  catch(error)
+                  {
+                       console.error("An error occurred:", error.message);
+                  }
+              };
+                function fn_OpenPopUp(id) {
+                    fn_clearForm();
+                  $("#staticBackdrop").modal("show");
+                  $("#PkCaseID").val(id);
+                  fns_BindDataList()
+              };
+              function fn_clearForm()
+              {
+                  $("#CourtNo").val("");
+                  $("#JudgeName").val("");
+                  $("#NextDate").val("");
+                  $("#Remark").val("");
+              }
+                        function fns_BindDataList() {
+
+                $('.preloader').show();
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CaseDetailsList", "ERPMaster")',
+                    dataType: 'json',
+                    data: {},
+
+                    success: function (result) {
+
+                        var hTable = "";
+
+                        if (result.cnt != "0") {
+
+                            var data = result.record;
+                                $("#tblCaseDetail tbody").html("");
+                            for (var i = 0; i < data.length; i++) {
+                                            var currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0);
+
+                                // Date Format
+                                var nextDate = new Date(data[i].dtNextDate);
+            nextDate.setHours(0, 0, 0, 0);
+
+                                var formattedDate =
+                                    ("0" + nextDate.getDate()).slice(-2) + "/" +
+                                    ("0" + (nextDate.getMonth() + 1)).slice(-2) + "/" +
+                                    nextDate.getFullYear();
+
+                                // Today Check
+                                var today = new Date();
+
+                                var isToday =
+                                    nextDate.getDate() == today.getDate() &&
+                                    nextDate.getMonth() == today.getMonth() &&
+                                    nextDate.getFullYear() == today.getFullYear();
+
+                                // Row Color
+                                var rowClass = isToday
+                                    ? "style='background-color:rgba(25,135,84,0.15);'"
+                                    : "";
+
+                                hTable += "<tr " + rowClass + ">";
+
+                                // Serial No
+                                hTable += "<td>" + (i + 1) + "</td>";
+
+                                // Court No
+                                hTable += "<td>" + data[i].strNexCourtNo + "</td>";
+
+                                // Date
+                                hTable += "<td>" + formattedDate + "</td>";
+
+                                // Judge Name
+                                hTable += "<td>" + data[i].strNextJudgeName + "</td>";
+
+                                // Remark
+                                hTable += "<td>" + data[i].strRemark + "</td>";
+
+                                // Delete Button
+                                hTable += "<td>";
+                                            if (nextDate >= currentDate) {
+
+                hTable += "<a href='javascript:void(0)' " +
+                    "class='btn btn-sm btn-danger' " +
+                    "onclick='DeleteCaseDetail(\"" + data[i].intCaseLastStatusID + "\")'>" +
+                    "<i class='ph ph-trash'></i> Delete</a>";
+            }
+            else {
+
+                hTable += "<span class='badge bg-secondary'>Locked</span>";
+            }
+
+                                hTable += "</td>";
+
+                                hTable += "</tr>";
+                            }
+
+                            $("#tblCaseDetail tbody").html(hTable);
+
+                        }
+                        else {
+
+                            $("#tblCaseDetail tbody").html(
+                                "<tr>" +
+                                "<td colspan='6' style='text-align:center;font-weight:bold;color:#dc3545'>" +
+                                "<i>No Record Found!</i>" +
+                                "</td>" +
+                                "</tr>"
+                            );
+                        }
+
+                        $('.preloader').hide();
+                    },
+
+                    error: function () {
+
+                        $("#tblCaseDetail tbody").html(
+                            "<tr>" +
+                            "<td colspan='6' style='text-align:center;font-weight:bold;color:#dc3545'>" +
+                            "<i>No Record Found!</i>" +
+                            "</td>" +
+                            "</tr>"
+                        );
+
+                        $('.preloader').hide();
+                    }
+                });
+            }
+                        function DeleteCaseDetail(id) {
+                            console.log(id)
+                if (confirm("Are you sure want to delete this record?")) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("DeleteCaseDetails", "ERPMaster")',
+                        data: { CaseLastStatusID: id },
+
+                        success: function (result) {
+                            if (result.error == "0") {
+                                            toastr.success(result.message)
+                                fns_BindDataList();
+                            }
+                            else {
+                                  toastr.error(result.message)
+                            }
+                        },
+
+                        error: function () {
+
+                            alert("Something went wrong!");
+                        }
+                    });
+                }
+            }
+    </script>

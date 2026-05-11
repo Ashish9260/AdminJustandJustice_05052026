@@ -12,9 +12,12 @@ namespace AdminJustAndJustice.Models
         public string? ClientEmailId { get; set; }
         public string? ClientAddress { get; set; }
         public string? CaseNo { get; set; }
+        public string? CourtNo { get; set; }
         public string? CaseTitle { get; set; }
         public string? Status { get; set; }
         public string? CaseStartDate { get; set; }
+        public string? NextDate { get; set; }
+        public string? Remark { get; set; }
         public string? JudgementDate { get; set; }
         public string? JudgeName { get; set; }
         public string BranchName { get; set; }
@@ -22,6 +25,7 @@ namespace AdminJustAndJustice.Models
         public string? ShortDetails { get; set; }
         public string? Details { get; set; }
         public string? FkCaseTypeId { get; set; }
+        public string? CaseLastStatusID { get; set; }
         public string? status { get; set; }
         public DataTable? dtProductEnquiry { get; set; }
         public async Task<DataSet> AddEditDltCase()
@@ -72,6 +76,30 @@ namespace AdminJustAndJustice.Models
                     new SqlParameter("@PAGESIZE", PageSize),
                      };
                 DataSet ds = await DBConnection.ExecuteQueryAsync(Procedure.GetCaseList, para);
+                return ds;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public async Task<DataSet> AddEditDltCaseDetails()
+        {
+            try
+            {
+                SqlParameter[] para =
+                {
+                    new SqlParameter("@MODE", Mode),
+                    new SqlParameter("@intPkCaseID", PkCaseID),
+                    new SqlParameter("@intCaseLastStatusID", CaseLastStatusID ),
+                    new SqlParameter("@strRemark", Remark),
+                    new SqlParameter("@dtNextDate", NextDate),
+                    new SqlParameter("@strNexCourtNo", CourtNo),
+                    new SqlParameter("@strNextJudgeName", JudgeName),
+                    new SqlParameter("@intCreatedBy", bigintCreatedBy)
+                };
+                DataSet ds = await DBConnection.ExecuteQueryAsync(Procedure.AddEditDltCaseDetail, para);
                 return ds;
             }
             catch (Exception)
